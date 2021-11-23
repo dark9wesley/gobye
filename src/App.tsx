@@ -1,14 +1,19 @@
 import Button, { ButtonSize, ButtonType } from "./components/Button/button"
 import Menu from "./components/Menu/menu"
 import MenuItem from "./components/Menu/menuItem"
+import SubMenu from "./components/Menu/subMenu"
 
 function App() {
   return (
     <div className="App">
-      <Menu defaultIndex={0} mode="vertical">
+      <Menu defaultIndex={"0"} mode="vertical" defaultOpenSubMenus={["3"]}>
         <MenuItem>1</MenuItem>
         <MenuItem>2</MenuItem>
         <MenuItem disabled>3</MenuItem>
+        <SubMenu title="122">
+          <MenuItem>1</MenuItem>
+          <MenuItem>2</MenuItem>
+        </SubMenu>
       </Menu>
       <Button onClick={() => console.log(111)}>按钮1</Button>
       <Button btnType={ButtonType.Default} size={ButtonSize.Large} disabled>

@@ -3,7 +3,7 @@ import classNames from "classnames"
 import { MenuContext } from "./menu"
 
 export interface MenuItemProps {
-  index?: number
+  index?: string
   className?: string
   style?: React.CSSProperties
   disabled?: boolean
@@ -14,13 +14,13 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
 
   const { currentIndex, onSelect } = useContext(MenuContext)
 
-  const classes = classNames("goby-menu-item", className, {
+  const classes = classNames("gobye-menu-item", className, {
     "menu-disabled": disabled,
     "menu-active": index === currentIndex,
   })
 
   const handleClick = () => {
-    if (onSelect && !disabled && typeof index === "number") {
+    if (onSelect && !disabled && typeof index === "string") {
       onSelect(index)
     }
   }
