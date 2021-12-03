@@ -20,6 +20,7 @@ const testProps: MenuProps = {
 const testVarticalProps: MenuProps = {
   mode: "vertical",
   defaultIndex: "0",
+  defaultOpenSubMenus: ["4"],
 }
 
 const GenerateMenu = (props: MenuProps) => {
@@ -30,6 +31,9 @@ const GenerateMenu = (props: MenuProps) => {
       <MenuItem>pengyw</MenuItem>
       <SubMenu title="submenu">
         <MenuItem>submenu1</MenuItem>
+      </SubMenu>
+      <SubMenu title="submenu2">
+        <MenuItem>submenu2_2</MenuItem>
       </SubMenu>
     </Menu>
   )
@@ -50,6 +54,7 @@ const createStyleSheet = () => {
 }
 
 let wrapper: RenderResult,
+  wrapper2: RenderResult,
   menuElement: HTMLElement,
   activeElement: HTMLElement,
   disabledElement: HTMLElement
@@ -65,7 +70,7 @@ describe("test menu and menuItem component", () => {
   it("should render correct Menu and MenuItem based on default props", () => {
     expect(menuElement).toBeInTheDocument()
     expect(menuElement).toHaveClass("gobye-menu test")
-    expect(menuElement.querySelectorAll(":scope > li").length).toEqual(4)
+    expect(menuElement.querySelectorAll(":scope > li").length).toEqual(5)
     expect(activeElement).toHaveClass("gobye-menu-item menu-active")
     expect(disabledElement).toHaveClass("gobye-menu-item menu-disabled")
   })
@@ -98,5 +103,27 @@ describe("test menu and menuItem component", () => {
     await waitFor(() => {
       expect(wrapper.queryByText("submenu1")).not.toBeVisible()
     })
+  })
+})
+
+describe("test Menu and MenuItem Component in vertical mode", () => {
+  beforeEach(() => {
+    wrapper2 = render(<GenerateMenu {...testVarticalProps} />)
+    wrapper2.container.append(createStyleSheet())
+  })
+
+  it("should render vertical mode when mode is set to vertical", () => {
+    const menuElement = wrapper2.getByTestId("test-menu")
+    expect(menuElement).toHaveClass("gobye-menu-vertical")
+  })
+
+  it("should show dropdown items when click on subMenu for vertical mode", () => {
+    const dropItem = wrapper2.getByText("submenu1")
+    expect(dropItem).not.toBeVisible()
+    fireEvent.click(wrapper2.getByText("submenu"))
+    expect(dropItem).toBeVisible()
+  })
+  it("should show subMenu dropdown when defaultOpenSubMenus contains SubMenu index", () => {
+    expect(wrapper2.queryByText("submenu2_2")).toBeVisible()
   })
 })
